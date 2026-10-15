@@ -12,10 +12,13 @@ const generateTokenAndSetCookie = (customerId, res) => {
     { expiresIn: '1d' }
   );
 
+  const isProduction = process.env.NODE_ENV === 'production';
+
   // Store JWT inside an HttpOnly cookie
   res.cookie('token', token, {
-    httpOnly: true, // Prevents client-side JavaScript from accessing the cookie (XSS protection)
-    sameSite: 'strict', // CSRF protection
+    httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+    secure: isProduction, // HTTPS required in production
+    sameSite: isProduction ? 'none' : 'lax', // Required for cross-origin deployment (e.g. Vercel -> Render)
     maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
   });
 

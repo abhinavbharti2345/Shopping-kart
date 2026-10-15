@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create a centralized Axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
   withCredentials: true, // Crucial for sending & receiving HttpOnly cookies across origins
   headers: {
     'Content-Type': 'application/json'

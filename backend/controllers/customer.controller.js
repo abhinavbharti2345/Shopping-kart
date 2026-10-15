@@ -151,8 +151,11 @@ const getCustomerProfile = async (req, res) => {
 const logoutCustomer = async (req, res) => {
   try {
     // Clear the authentication cookie
+    const isProduction = process.env.NODE_ENV === 'production';
     res.cookie('token', '', {
       httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
       expires: new Date(0)
     });
 
